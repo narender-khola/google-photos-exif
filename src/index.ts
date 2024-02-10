@@ -9,7 +9,7 @@ import { updateExifMetadata } from './helpers/update-exif-metadata';
 import { updateFileModificationDate } from './helpers/update-file-modification-date';
 import { Directories } from './models/directories'
 
-const { readdir, mkdir, copyFile } = fspromises;
+const { readdir, mkdir, copyFile, unlink } = fspromises;
 
 class GooglePhotosExif extends Command {
   static description = `Takes in a directory path for an extracted Google Photos Takeout. Extracts all photo/video files (based on the conigured list of file extensions) and places them into an output directory. All files will have their modified timestamp set to match the timestamp specified in Google's JSON metadata files (where present). In addition, for file types that support EXIF, the EXIF "DateTimeOriginal" field will be set to the timestamp from Google's JSON metadata, if the field is not already set in the EXIF metadata.`;
@@ -134,6 +134,13 @@ class GooglePhotosExif extends Command {
         }
 
         await updateFileModificationDate(mediaFile.outputFilePath, photoTimeTaken);
+      }
+
+      console.log("mediaFile.mediaFilePath " + mediaFile.mediaFilePath);
+      console.log("mediaFile.jsonFilePath " + mediaFile.jsonFilePath);
+      unlink(mediaFile.mediaFilePath);
+      if(mediaFile.jsonFilePath) {
+        unlink(mediaFile.jsonFilePath);
       }
     }
 
