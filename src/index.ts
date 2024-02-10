@@ -141,7 +141,7 @@ class GooglePhotosExif extends Command {
 
       if(mediaFile.jsonFilePath) {
         // Copy the file into output directory
-        this.log(`Copying file ${i} of ${mediaFiles.length}: ${mediaFile.mediaFilePath} -> ${mediaFile.outputFileName}`);
+        this.log(`Copying file ${i+1} of ${mediaFiles.length}: ${mediaFile.mediaFilePath} -> ${mediaFile.outputFileName}`);
         await copyFile(mediaFile.mediaFilePath, mediaFile.outputFilePath);
 
         // Process the output file, setting the modified timestamp and/or EXIF metadata where necessary
@@ -160,12 +160,13 @@ class GooglePhotosExif extends Command {
           await updateFileModificationDate(mediaFile.outputFilePath, photoTimeTaken);
         }
 
-        copyFile(mediaFile.mediaFilePath, mediaFile.outputBackupPath);
-        unlink(mediaFile.mediaFilePath);
+        await copyFile(mediaFile.mediaFilePath, mediaFile.outputBackupPath);
+        await unlink(mediaFile.mediaFilePath);
         if(mediaFile.jsonFilePath && mediaFile.outputBackupJsonPath) {
-          copyFile(mediaFile.jsonFilePath, mediaFile.outputBackupJsonPath);
-          unlink(mediaFile.jsonFilePath);
+          await copyFile(mediaFile.jsonFilePath, mediaFile.outputBackupJsonPath);
+          await unlink(mediaFile.jsonFilePath);
         }
+        this.log("done\n\n");
       }
     }
 
