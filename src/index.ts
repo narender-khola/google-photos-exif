@@ -84,8 +84,8 @@ class GooglePhotosExif extends Command {
       throw new Error('You must specify an backup directory using the --backupDir flag');
     }
 
-    await this.checkDirIsEmptyAndCreateDirIfNotFound(directories.output, 'If the output directory already exists, it must be empty');
-    await this.checkDirIsEmptyAndCreateDirIfNotFound(directories.error, 'If the error directory already exists, it must be empty');
+    await this.checkDirIsPresentCreateDirIfNotFound(directories.output);
+    await this.checkDirIsPresentCreateDirIfNotFound(directories.error);
     await this.checkDirIsPresentCreateDirIfNotFound(directories.backup);
   }
 
