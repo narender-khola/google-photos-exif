@@ -10,4 +10,7 @@ export interface MediaFileInfo {
 
   outputFileName: string;
   outputFilePath: string;
+
+  outputBackupPath: string;
+  outputBackupJsonPath: string|null;
 }

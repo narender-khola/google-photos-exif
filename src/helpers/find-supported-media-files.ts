@@ -7,7 +7,7 @@ import { findFilesWithExtensionRecursively } from './find-files-with-extension-r
 import { generateUniqueOutputFileName } from './generate-unique-output-file-name';
 import { getCompanionJsonPathForMediaFile } from './get-companion-json-path-for-media-file';
 
-export async function findSupportedMediaFiles(inputDir: string, outputDir: string): Promise<MediaFileInfo[]> {
+export async function findSupportedMediaFiles(inputDir: string, outputDir: string, backupDir: string): Promise<MediaFileInfo[]> {
   const supportedMediaFileExtensions = CONFIG.supportedMediaFileTypes.map(fileType => fileType.extension);
   const mediaFilePaths = await findFilesWithExtensionRecursively(inputDir, supportedMediaFileExtensions);
 
@@ -25,6 +25,8 @@ export async function findSupportedMediaFiles(inputDir: string, outputDir: strin
 
     const outputFileName = generateUniqueOutputFileName(mediaFilePath, allUsedOutputFilesLowerCased);
     const outputFilePath = resolve(outputDir, outputFileName);
+    const outputBackupPath = resolve(backupDir, outputFileName);
+    const outputBackupJsonPath = jsonFileName ? resolve(backupDir, jsonFileName) : null;
 
     mediaFiles.push({
       mediaFilePath,
@@ -36,6 +38,8 @@ export async function findSupportedMediaFiles(inputDir: string, outputDir: strin
       jsonFileExists,
       outputFileName,
       outputFilePath,
+      outputBackupPath,
+      outputBackupJsonPath
     });
     allUsedOutputFilesLowerCased.push(outputFileName.toLowerCase());
   }
