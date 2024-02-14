@@ -162,10 +162,10 @@ class GooglePhotosExif extends Command {
 
         await copyFile(mediaFile.mediaFilePath, mediaFile.outputBackupPath);
         await unlink(mediaFile.mediaFilePath);
-        if(mediaFile.jsonFilePath && mediaFile.outputBackupJsonPath) {
-          await copyFile(mediaFile.jsonFilePath, mediaFile.outputBackupJsonPath);
-          await unlink(mediaFile.jsonFilePath);
-        }
+        // if(mediaFile.jsonFilePath && mediaFile.outputBackupJsonPath) {
+        //   await copyFile(mediaFile.jsonFilePath, mediaFile.outputBackupJsonPath);
+        //   await unlink(mediaFile.jsonFilePath);
+        // }
         this.log("done\n\n");
       }
     }
